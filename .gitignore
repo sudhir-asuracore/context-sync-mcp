@@ -1,0 +1,19 @@
+# Go artifacts
+bin/
+contextsync
+*.exe
+*.test
+*.prof
+
+# Database
+*.db
+*.db-journal
+
+# Project specific
+prd.md
+tasks.md
+.junie/
+
+# IDE
+.idea/
+.vscode/

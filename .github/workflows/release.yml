@@ -1,0 +1,84 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: 'Version bump type (patch, minor, major)'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25.x'
+
+      - name: Install Semver Tool
+        run: go install github.com/caarlos0/svu@latest
+
+      - name: Bump Version
+        id: bump
+        run: |
+          CURRENT_VERSION=$(cat VERSION)
+          # Use svu to calculate next version based on current version and bump type
+          # If there are no tags yet, svu might fail or start from v0.0.0
+          # We'll handle it simply by reading VERSION file if svu is too complex for this one-off
+          
+          IFS='.' read -ra ADDR <<< "$CURRENT_VERSION"
+          MAJOR=${ADDR[0]}
+          MINOR=${ADDR[1]}
+          PATCH=${ADDR[2]}
+          
+          if [ "${{ github.event.inputs.bump }}" == "major" ]; then
+            MAJOR=$((MAJOR + 1))
+            MINOR=0
+            PATCH=0
+          elif [ "${{ github.event.inputs.bump }}" == "minor" ]; then
+            MINOR=$((MINOR + 1))
+            PATCH=0
+          else
+            PATCH=$((PATCH + 1))
+          fi
+          
+          NEXT_VERSION="$MAJOR.$MINOR.$PATCH"
+          echo "$NEXT_VERSION" > VERSION
+          echo "next_version=$NEXT_VERSION" >> $GITHUB_OUTPUT
+          
+      - name: Commit and Tag
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add VERSION
+          git commit -m "chore: bump version to ${{ steps.bump.outputs.next_version }}"
+          git tag "v${{ steps.bump.outputs.next_version }}"
+          git push origin main --tags
+
+      - name: Build
+        run: |
+          mkdir -p dist
+          GOOS=linux GOARCH=amd64 go build -o dist/contextsync-linux-amd64
+          GOOS=darwin GOARCH=amd64 go build -o dist/contextsync-darwin-amd64
+          GOOS=darwin GOARCH=arm64 go build -o dist/contextsync-darwin-arm64
+          GOOS=windows GOARCH=amd64 go build -o dist/contextsync-windows-amd64.exe
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.bump.outputs.next_version }}
+          files: dist/*
+          generate_release_notes: true
