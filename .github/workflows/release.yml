@@ -72,6 +72,7 @@ jobs:
         run: |
           mkdir -p dist
           GOOS=linux GOARCH=amd64 go build -o dist/contextsync-linux-amd64
+          GOOS=linux GOARCH=arm64 go build -o dist/contextsync-linux-arm64
           GOOS=darwin GOARCH=amd64 go build -o dist/contextsync-darwin-amd64
           GOOS=darwin GOARCH=arm64 go build -o dist/contextsync-darwin-arm64
           GOOS=windows GOARCH=amd64 go build -o dist/contextsync-windows-amd64.exe

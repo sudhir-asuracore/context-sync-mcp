@@ -46,15 +46,31 @@ graph TD
 
 ## Getting Started
 
+### Quick Installation
+
+Run the following command in your terminal to automatically download and install the latest version of ContextSync.
+
+#### Linux and macOS
+```bash
+curl -fsSL https://raw.githubusercontent.com/sudhir-asuracore/context-sync-mcp/main/install.sh | sh
+```
+
+#### Windows (PowerShell)
+```powershell
+iwr https://raw.githubusercontent.com/sudhir-asuracore/context-sync-mcp/main/install.ps1 | iex
+```
+
+---
+
 ### Prerequisites
-- [Go](https://go.dev/doc/install) (version 1.25 or higher recommended)
+- [Go](https://go.dev/doc/install) (version 1.25 or higher recommended) - *Required only if installing from source.*
 
 ### Installation from Source
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/contextsync.git
-   cd contextsync
+   git clone https://github.com/sudhir-asuracore/context-sync-mcp.git
+   cd context-sync-mcp
    ```
 
 2. Tidy dependencies and build the binary:
