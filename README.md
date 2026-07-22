@@ -1,4 +1,4 @@
-# ContextSync 🧠
+# ContextSync
 
 > **Lightweight, High-Performance Go-Based MCP Shared Memory Bank for Cross-Agent Collaboration**
 
@@ -8,11 +8,11 @@ ContextSync is a zero-overhead, single-binary Model Context Protocol (MCP) serve
 
 ## Features
 
-- ⚡ **Zero-Daemon Overhead:** No background services, daemons, or server processes to manage. Transactions run directly via the calling agent process.
-- 🔒 **Local & Private:** All data is stored in a pure-Go, CGO-free SQLite database located at `~/.config/contextsync/memory.db`.
-- 📁 **Workspace Scoped:** Memory is automatically separated and queried based on the absolute repository path.
-- 🤝 **Cross-Agent Memory:** Any fact, roadblock, or state transition recorded by one agent is instantly accessible to other MCP-compatible clients.
-- 🔍 **Flexible Querying:** Supports SQL `LIKE` constraints for keyword searching without complex vector-embedding overhead.
+- **Zero-Daemon Overhead:** No background services, daemons, or server processes to manage. Transactions run directly via the calling agent process.
+- **Local & Private:** All data is stored in a pure-Go, CGO-free SQLite database located at `~/.config/contextsync/memory.db`.
+- **Workspace Scoped:** Memory is automatically separated and queried based on the absolute repository path.
+- **Cross-Agent Memory:** Any fact, roadblock, or state transition recorded by one agent is instantly accessible to other MCP-compatible clients.
+- **Flexible Querying:** Supports SQL `LIKE` constraints for keyword searching without complex vector-embedding overhead.
 
 ---
 
